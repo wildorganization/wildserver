@@ -10,17 +10,10 @@ module.exports = {
     //removeUser: removeUser
 }
 
-function getAllUsers() {
-    var connection = db.getConnection();
-    connection.connect(function(err){
-        if(!err) {
-            console.log("Database is connected ... nn");    
-            return connection;
-        } else {
-            return -1;
-            console.log("Error connecting database ... nn");    
-        }
-    });
+var connection;
+
+function getAllUsers(req, res, next) {
+    connection = db.getConnection();
     
     if (connection === -1) {
         console.log("Conexion failed.");
@@ -31,10 +24,18 @@ function getAllUsers() {
         connection.end();
         if (!err) {
             console.log('Data: ', rows);
-            return rows;
+            res.status(200).json({
+                status: 'success',
+                data: rows,
+                message: 'Retrieved ALL users'
+            });
         } else {
             console.log('Error while performing Query.');
-            return {error: "Query failed."};
+            res.status(500).json({
+                status: 'error',
+                data: err,
+                message: 'Error while performing Query.'
+            });
         }
     });
 

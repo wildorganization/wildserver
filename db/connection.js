@@ -6,7 +6,7 @@ module.exports = {
 
 function getConnection() {
 	// Instanciando conexao
-	return mysql.createConnection({
+	var connection = mysql.createConnection({
 	  host     : 'localhost',
 	  user     : 'root',
 	  password : 'cenoura',
@@ -23,4 +23,6 @@ function getConnection() {
 		    console.log("Error connecting database ... nn");    
 		}
 	});
+
+	return connection;
 }
