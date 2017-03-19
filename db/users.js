@@ -1,6 +1,6 @@
 var crypto = require('crypto');
 var mysql = require('mysql');
-var db = require('../db/connection.js');
+var db = require('../db/connection');
 
 module.exports = {
     getAllUsers: getAllUsers,
@@ -9,11 +9,9 @@ module.exports = {
     // updateUser: updateUser,
     //removeUser: removeUser
 }
-var connection;
+
 function getAllUsers() {
-     connection = db.getConnection();
-    
-    // tentando conectar com o banco
+    var connection = db.getConnection();
     connection.connect(function(err){
         if(!err) {
             console.log("Database is connected ... nn");    
@@ -23,8 +21,14 @@ function getAllUsers() {
             console.log("Error connecting database ... nn");    
         }
     });
+    
+    if (connection === -1) {
+        console.log("Conexion failed.");
+        return {error: "Conexion failed."}
+    };
 
     connection.query('SELECT * FROM tb_usuarios', function(err, rows, fields) {
+        connection.end();
         if (!err) {
             console.log('Data: ', rows);
             return rows;
@@ -34,5 +38,4 @@ function getAllUsers() {
         }
     });
 
-    connection.end();
 }
