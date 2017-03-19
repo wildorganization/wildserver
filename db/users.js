@@ -10,8 +10,6 @@ module.exports = {
     //removeUser: removeUser
 }
 
-var connection;
-
 function getAllUsers(req, res, next) {
     db.executeQuery(req,res,'SELECT * FROM tb_usuarios');
 }
